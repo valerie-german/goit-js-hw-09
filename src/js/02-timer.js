@@ -16,12 +16,12 @@ let timerId = null;
 
 function dateChecking(today, future) { 
     if (today >= future) {
-        window.alert("The past is irrevocable. Let's look to the future! 🧐");
-        return;
+        window.alert("The past is irrevocable. Let's look to the future! 🧐");    
+       
     }
     else { 
       startBtn.removeAttribute("disabled");
-      console.log(future);
+     
     }
 }
 
@@ -50,10 +50,10 @@ function convertMs(ms) {
 
 
 const options = {
-//   enableTime: true,
-//   time_24hr: true,
-//   defaultDate: new Date(),
-//   minuteIncrement: 1,
+  enableTime: true,
+  time_24hr: true,
+  defaultDate: new Date(),
+  minuteIncrement: 1,
     onClose(selectedDates) {
         futureDate = selectedDates[0].getTime();
          
@@ -79,8 +79,7 @@ const options = {
                 document.querySelector("span[data-seconds]").textContent = seconds;
 
             }, 1000); 
-        }
-        
+        }       
 
 
     },    
