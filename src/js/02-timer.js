@@ -9,7 +9,7 @@ startBtn.setAttribute("disabled", "disabled");
 
 const todaysDate = new Date().getTime();
 
-const futureDate = 0;
+let futureDate = 0;
 let timerId = null;
 
 
