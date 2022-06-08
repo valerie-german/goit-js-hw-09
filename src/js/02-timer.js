@@ -4,18 +4,42 @@ import { Notify } from 'notiflix/build/notiflix-notify-aio';
 
 const input = document.querySelector("#datetime-picker");
 const startBtn = document.querySelector("button[data-start]");
+const todaysDate = new Date().getTime();
+// let futureDate = 0;
 
 startBtn.setAttribute("disabled", "disabled");
 
-const todaysDate = new Date().getTime();
+const options = {
+  enableTime: true,
+  time_24hr: true,
+  defaultDate: new Date(),
+  minuteIncrement: 1,
+  timerId: 0,
+  futureDate: 0,
 
-let futureDate = 0;
-let timerId = null;
+    onClose(selectedDates) {
+        options.futureDate = selectedDates[0].getTime();
+        dateChecking(todaysDate, options.futureDate);
+
+        startBtn.addEventListener('click', () => {    
+            if (options.timerId !== null) {
+                clearInterval(options.timerId);
+            }
+            options.timerId = timerOn(todaysDate, options.futureDate);
+         });
+    }    
+};
+
+
+input.addEventListener('focus', () => {
+    flatpickr("#datetime-picker", options);    
+})
 
 
 function dateChecking(today, future) { 
     if (today >= future) {
-        Notify.failure("The past is irrevocable. Let's look to the future! 🧐");        
+        Notify.failure("The past is irrevocable. Let's look to the future! 🧐");
+        startBtn.setAttribute("disabled", true);
     }
     else { 
         startBtn.removeAttribute("disabled");     
@@ -45,50 +69,24 @@ function addLeadingZero(value) {
     return String(value).padStart(2, '0');
 }
 
- function timerOn(today, future) {
-          let ms = future - today;
-            timerId = setInterval(() => {
-                ms -= 1000; 
-                if (ms <= 0) {
-                    clearInterval(timerId);
-                }
-                else { 
-                    const { days, hours, minutes, seconds } = convertMs(ms);        
+function timerOn(today, future) {
+    let ms = future - today;
+    let localTimerId = setInterval(() => {
+        ms -= 1000; 
+        if (ms <= 0) {
+            clearInterval(localTimerId);
+        }
+        else { 
+            const { days, hours, minutes, seconds } = convertMs(ms);        
 
-                document.querySelector("span[data-days]").textContent = addLeadingZero(days);
-                document.querySelector("span[data-hours]").textContent = addLeadingZero(hours);
-                document.querySelector("span[data-minutes]").textContent = addLeadingZero(minutes);
-                document.querySelector("span[data-seconds]").textContent = addLeadingZero(seconds);  
-                }
-                            
-
-            }, 1000); 
-     console.log(timerId);
-        } 
-
-const options = {
-  enableTime: true,
-  time_24hr: true,
-  defaultDate: new Date(),
-    minuteIncrement: 1,
-  
-    onClose(selectedDates) {
-       futureDate = selectedDates[0].getTime();
-         
-          dateChecking(todaysDate, futureDate);
-
-        startBtn.addEventListener('click', () => { 
-             timerOn(todaysDate, futureDate);
-             console.log(timerId);
-         });
-        
-    }    
-};
+        document.querySelector("span[data-days]").textContent = addLeadingZero(days);
+        document.querySelector("span[data-hours]").textContent = addLeadingZero(hours);
+        document.querySelector("span[data-minutes]").textContent = addLeadingZero(minutes);
+        document.querySelector("span[data-seconds]").textContent = addLeadingZero(seconds);  
+        }
+    }, 1000);
+    return localTimerId;
+} 
 
 
-
-input.addEventListener('focus', () => {
-    flatpickr("#datetime-picker", options);
-    
-})
 

@@ -38,7 +38,7 @@ box-shadow: 0px 5px 10px 2px rgba(80, 60, 34, 0.1);
 
 #datetime-picker{
 
-
+    cursor: pointer;  
     border: 1px solid #d2c6c6;
     border-radius: 3px;
    
