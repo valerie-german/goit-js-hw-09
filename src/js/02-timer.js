@@ -9,7 +9,7 @@ startBtn.setAttribute("disabled", "disabled");
 
 const todaysDate = new Date().getTime();
 
-let futureDate;
+const futureDate = 0;
 let timerId = null;
 
 
@@ -49,16 +49,18 @@ function addLeadingZero(value) {
           let ms = future - today;
             timerId = setInterval(() => {
                 ms -= 1000; 
-                if (ms <= 0) { 
+                if (ms <= 0) {
                     clearInterval(timerId);
-                }               
-                
-                const { days, hours, minutes, seconds } = convertMs(ms);        
+                }
+                else { 
+                    const { days, hours, minutes, seconds } = convertMs(ms);        
 
                 document.querySelector("span[data-days]").textContent = addLeadingZero(days);
                 document.querySelector("span[data-hours]").textContent = addLeadingZero(hours);
                 document.querySelector("span[data-minutes]").textContent = addLeadingZero(minutes);
-                document.querySelector("span[data-seconds]").textContent = addLeadingZero(seconds);              
+                document.querySelector("span[data-seconds]").textContent = addLeadingZero(seconds);  
+                }
+                            
 
             }, 1000); 
      console.log(timerId);
@@ -89,3 +91,4 @@ input.addEventListener('focus', () => {
     flatpickr("#datetime-picker", options);
     
 })
+
